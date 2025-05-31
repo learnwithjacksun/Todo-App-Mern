@@ -76,9 +76,7 @@ const useAuth = () => {
     } catch (error) {
         console.log(error);
         setUser(null)
-        if (error instanceof AxiosError) {
-          toast.warning(error.response?.data.message);
-        }
+      toast.warning("Please login to continue")
     } finally {
         setIsCheckingAuth(false);
     }
