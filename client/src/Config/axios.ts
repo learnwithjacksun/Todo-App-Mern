@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const dev = true;
+const dev = false;
 
 const baseURL = dev ? "http://localhost:4000/api" : "https://todo-backend-bzs4.onrender.com/api";
 
