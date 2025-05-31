@@ -44,6 +44,7 @@ const useTodo = () => {
       return response.data.todos;
     } catch (error) {
       console.log(error);
+      setTodos([]);
     } finally {
       setIsLoading(false);
     }
