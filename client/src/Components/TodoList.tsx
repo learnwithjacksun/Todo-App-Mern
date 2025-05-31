@@ -1,11 +1,33 @@
-import { Check, Loader, Trash2 } from "lucide-react";
+import { Check, Loader, Trash2, Vote } from "lucide-react";
 import useTodo from "../Hooks/useTodo";
+import { useEffect } from "react";
 const TodoList = () => {
-  const { todos, deleteTodo, deletingTodoId, updateTodo, updatingTodoId } = useTodo();
+  const {
+    todos,
+    deleteTodo,
+    deletingTodoId,
+    updateTodo,
+    updatingTodoId,
+    isLoading,
+    getTodos,
+  } = useTodo();
+  useEffect(() => {
+    getTodos();
+  }, [getTodos]);
   return (
     <>
       <ul>
-        {todos.map((todo) => (
+        <div className="space-y-4">
+          {isLoading &&
+            Array.from({ length: 3 }).map((_, index) => (
+              <li
+                key={index}
+                className="bg-secondary rounded-md animate-pulse min-h-[70px]"
+              ></li>
+            ))}
+        </div>
+
+        {!isLoading && todos.map((todo) => (
           <li
             key={todo.id}
             className="flex items-center gap-2 border-b border-line pb-4 mt-10"
@@ -19,7 +41,9 @@ const TodoList = () => {
                 <Loader size={18} className="animate-spin" />
               )}
             </div>
-            <p className={`${todo.completed ? "line-through text-muted" : ""}`}>{todo.title}</p>
+            <p  onClick={() => updateTodo(todo.id, todo.completed)} className={`${todo.completed ? "line-through text-muted" : ""}`}>
+              {todo.title}
+            </p>
             <button
               disabled={deletingTodoId === todo.id}
               onClick={() => deleteTodo(todo.id)}
@@ -34,6 +58,13 @@ const TodoList = () => {
           </li>
         ))}
       </ul>
+
+      {todos.length === 0 && !isLoading && (
+        <div className="center bg-secondary min-h-[200px] rounded-md flex-col">
+          <Vote size={48} className="text-muted animate-pulse" />
+          <p className="text-muted">No todos found</p>
+        </div>
+      )}
     </>
   );
 };

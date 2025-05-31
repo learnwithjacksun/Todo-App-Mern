@@ -10,6 +10,10 @@ const todoSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    ownerId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

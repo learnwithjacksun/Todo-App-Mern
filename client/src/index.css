@@ -31,10 +31,18 @@ button{
 }
 
 .btn{
-  @apply px-4 h-10 py-2 rounded-md font-medium;
+  @apply px-4 py-2 flex items-center gap-1 rounded-md font-medium;
 }
 
 .btn-primary{
   @apply bg-primary text-white;
+}
+
+main{
+  @apply md:w-[680px] w-[90%] mx-auto pb-10 space-y-4;
+}
+
+.main{
+  @apply md:w-[680px] w-[90%] mx-auto;
 }
 

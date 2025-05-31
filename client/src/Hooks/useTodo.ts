@@ -2,20 +2,28 @@ import { toast } from "sonner";
 import api from "../Config/axios";
 import { useTodoStore } from "../Store";
 import { useCallback, useState } from "react";
+import useAuth from "./useAuth";
 
 const useTodo = () => {
+  const { user } = useAuth();
   const { setTodos, todos } = useTodoStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [deletingTodoId, setDeletingTodoId] = useState<string | null>(null);
   const [updatingTodoId, setUpdatingTodoId] = useState<string | null>(null);
 
   const addTodo = async (title: string) => {
     setIsAdding(true);
+    if(!user) {
+      toast.error("Please login to add a todo");
+      return;
+    }
     try {
       const newTodo = {
         title,
+        ownerId: user?.id,
       };
-       await api.post("/todos", newTodo);
+      await api.post("/todos", newTodo);
       const todos = await getTodos();
       setTodos(todos);
       toast.success("Todo added successfully");
@@ -28,6 +36,7 @@ const useTodo = () => {
   };
 
   const getTodos = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await api.get("/todos");
       setTodos(response.data.todos);
@@ -35,7 +44,8 @@ const useTodo = () => {
       return response.data.todos;
     } catch (error) {
       console.log(error);
-      toast.error("Failed to get todos");
+    } finally {
+      setIsLoading(false);
     }
   }, [setTodos]);
 
@@ -69,8 +79,17 @@ const useTodo = () => {
     }
   };
 
-
-  return { addTodo, isAdding, getTodos, todos, deleteTodo, deletingTodoId, updateTodo, updatingTodoId };
+  return {
+    addTodo,
+    isAdding,
+    getTodos,
+    todos,
+    deleteTodo,
+    deletingTodoId,
+    updateTodo,
+    updatingTodoId,
+    isLoading,
+  };
 };
 
 export default useTodo;

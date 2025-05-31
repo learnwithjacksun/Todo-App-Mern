@@ -26,19 +26,19 @@ const TodoForm = () => {
 
   return (
     <>
-      <div className="space-y-2">
-        <form className=" flex gap-2 mt-10" onSubmit={handleSubmit(onSubmit)}>
+      <div className="space-y-2 mt-6">
+        <form className=" flex gap-2" onSubmit={handleSubmit(onSubmit)}>
           <input
             type="text"
             placeholder="Add a new todo"
             autoFocus
-            className="border-b border-line flex-1 font-light text-2xl"
+            className="border-b border-line w-full font-light text-2xl"
             {...register("title")}
           />
           <button
             disabled={isAdding}
             type="submit"
-            className="btn-primary center h-10 w-10 rounded-sm "
+            className="btn-primary center h-10 min-w-10 rounded-sm "
           >
             {isAdding ? <Loader size={18} className="animate-spin" /> : <Plus />}
           </button>
